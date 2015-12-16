@@ -5,19 +5,35 @@
 # Copyright (C) 2015 SPINEN
 #
 
+include_recipe 'chef-sugar'
+
 # Install required dependencies
 case node['platform_family']
 when 'debian', 'ubuntu'
-  %w(
-    build-essential
-    software-properties-common
-    sqlite
-    libsqlite3-dev
-    make
-    ruby1.9.1-dev
-    g++
-  ).each do |deb|
-    package deb
+  if debian_after_wheezy?
+    %w(
+      build-essential
+      software-properties-common
+      sqlite
+      libsqlite3-dev
+      make
+      ruby2.1-dev
+      g++
+    ).each do |deb|
+      package deb
+    end
+  else
+    %w(
+      build-essential
+      software-properties-common
+      sqlite
+      libsqlite3-dev
+      make
+      ruby1.9.1-dev
+      g++
+    ).each do |deb|
+      package deb
+    end
   end
 when 'rhel', 'fedora', 'suse'
   # Install required dependencies

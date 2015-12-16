@@ -12,3 +12,6 @@ supports 'ubuntu', '=12.04'
 supports 'ubuntu', '=14.04'
 supports 'centos', '=7.0'
 supports 'debian', '=7.8'
+supports 'debian', '>=8.0'
+
+depends 'chef-sugar'
