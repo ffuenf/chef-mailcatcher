@@ -67,7 +67,7 @@ when 'ubuntu'
 # sysv script for debian
 when 'debian'
   if debian_after_wheezy?
-    template '/usr/lib/systemd/system/mailcatcher.service' do
+    template '/lib/systemd/system/mailcatcher.service' do
       source 'mailcatcher.init.systemd.conf.erb'
       mode 0644
       notifies :restart, 'service[mailcatcher]', :immediately
