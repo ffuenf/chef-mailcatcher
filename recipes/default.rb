@@ -66,15 +66,28 @@ when 'ubuntu'
   end
 # sysv script for debian
 when 'debian'
-  template '/etc/init.d/mailcatcher' do
-    source 'mailcatcher.init.debian.conf.erb'
-    mode 0744
-    notifies :restart, 'service[mailcatcher]', :immediately
-  end
-  service 'mailcatcher' do
-    provider Chef::Provider::Service::Init
-    supports restart: true
-    action :start
+  if debian_after_wheezy?
+    template '/usr/lib/systemd/system/mailcatcher.service' do
+      source 'mailcatcher.init.systemd.conf.erb'
+      mode 0644
+      notifies :restart, 'service[mailcatcher]', :immediately
+    end
+    service 'mailcatcher' do
+      provider Chef::Provider::Service::Systemd
+      supports restart: true
+      action :start
+    end
+  else
+    template '/etc/init.d/mailcatcher' do
+      source 'mailcatcher.init.debian.conf.erb'
+      mode 0744
+      notifies :restart, 'service[mailcatcher]', :immediately
+    end
+    service 'mailcatcher' do
+      provider Chef::Provider::Service::Init
+      supports restart: true
+      action :start
+    end
   end
 # sysv script for centos and suse (needs to be tested on suse still)
 when 'suse', 'centos'

@@ -1,16 +1,31 @@
 ---
 driver:
   name: vagrant
+  driver_config:
+    require_chef_omnibus: latest
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
+  data_path: test/shared
 
 platforms:
-  - name: ubuntu-12.04
-  - name: ubuntu-14.04
-  - name: centos-7.0
+  - name: debian-6.0.10-amd64
+    driver_config:
+      box: ffuenf/debian-6.0.10-amd64
+      box_url: https://atlas.hashicorp.com/ffuenf/debian-6.0.10-amd64
+
+  - name: debian-7.8.0-amd64
+    driver_config:
+      box: ffuenf/debian-7.9.0-amd64
+      box_url: https://atlas.hashicorp.com/ffuenf/debian-7.9.0-amd64
+
+  - name: ubuntu-14.04.3-server-amd64
+    driver_config:
+      box: ffuenf/ubuntu-14.04.3-server-amd64
+      box_url: https://atlas.hashicorp.com/ffuenf/ubuntu-14.04.3-server-amd64
 
 suites:
-  - name: default
-    run_list:
-    attributes:
+- name: default
+  run_list:
+    - recipe[chef-mailcatcher::default]
+  attributes: {}
